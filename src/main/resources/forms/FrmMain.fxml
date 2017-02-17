@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="669.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.moorea.query_analyzer.formcontrollers.FrmMainController">
+   <children>
+      <Pane id="pnlTreeView" layoutX="14.0" layoutY="14.0" prefHeight="506.0" prefWidth="289.0">
+         <children>
+            <Label id="lblDBandCollections" layoutX="14.0" layoutY="14.0" text="DBs and Collections" />
+            <TreeView id="trvDBandCollections" fx:id="trvDBandCollections" layoutX="15.0" layoutY="43.0" prefHeight="450.0" prefWidth="260.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

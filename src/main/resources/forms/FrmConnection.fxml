@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="389.0" prefWidth="367.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.moorea.query_analyzer.formcontrollers.FrmConnectionController">
+   <children>
+      <Accordion id="acrdConnOptions" layoutX="14.0" layoutY="14.0" prefHeight="312.0" prefWidth="338.0">
+        <panes>
+          <TitledPane id="tpHost" animated="false" text="Host">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label id="lblHost" layoutX="14.0" layoutY="14.0" text="Mongo Host" />
+                        <TextField id="txtHost" fx:id="txtHost" layoutX="14.0" layoutY="31.0" prefHeight="27.0" prefWidth="306.0" promptText="localhost" />
+                        <Label id="lblPort" layoutX="14.0" layoutY="76.0" text="Port" />
+                        <TextField id="txtPort" fx:id="txtPort" layoutX="14.0" layoutY="102.0" prefHeight="27.0" prefWidth="305.0" promptText="27017" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane id="tpAuthentication" animated="false" text="Authentication">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox id="chkUsesAuthentication" fx:id="chkUsesAuthentication" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Uses authentication" />
+                        <Pane id="pnlAuthentication" fx:id="pnlAuthentication" layoutX="14.0" layoutY="40.0" prefHeight="168.0" prefWidth="305.0" visible="false">
+                           <children>
+                              <Label id="lblUser" layoutX="14.0" layoutY="54.0" text="User" />
+                              <TextField id="txtUser" fx:id="txtUser" layoutX="16.0" layoutY="71.0" prefHeight="27.0" prefWidth="273.0" promptText="username" />
+                              <Label id="lblPassword" layoutX="13.0" layoutY="103.0" text="Password" />
+                              <TextField id="txtPassword" fx:id="txtPassword" layoutX="16.0" layoutY="120.0" prefHeight="27.0" prefWidth="273.0" promptText="password" />
+                              <Label layoutX="12.0" layoutY="6.0" text="Authentication Database" />
+                              <TextField id="txtAuthenticationDatabase" fx:id="txtAuthenticationDatabase" layoutX="16.0" layoutY="23.0" prefHeight="27.0" prefWidth="273.0" promptText="admin" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane id="tpOptions" animated="false" text="Options">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button id="btnConnect" fx:id="btnConnect" layoutX="37.0" layoutY="149.0" mnemonicParsing="false" onAction="#connectToMongoServer" text="Connect" />
+                        <Button id="btnClose" fx:id="btnClose" layoutX="186.0" layoutY="149.0" mnemonicParsing="false" onAction="#closeProgram" text="Close" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </children>
+</AnchorPane>

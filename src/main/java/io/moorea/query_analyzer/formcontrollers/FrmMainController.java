@@ -8,8 +8,11 @@ import java.util.ResourceBundle;
 import com.mongodb.client.MongoIterable;
 
 import io.moorea.query_analizer.database.DbHelper;
+import io.moorea.query_analizer.database.ProfilingLevel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -40,6 +43,9 @@ public class FrmMainController implements Initializable {
 	private Button btnProfile;
 	
 	@FXML
+	private Button btnDeleteProfile;
+	
+	@FXML
 	private Label lblQueryThreshold;
 	
 	@FXML
@@ -54,6 +60,10 @@ public class FrmMainController implements Initializable {
 	@FXML
 	private Label lblThresholdValue;
 	
+	private String selectedDbName = "";
+	
+	private String selectedCollectionName = "";
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadEvents();
@@ -65,16 +75,103 @@ public class FrmMainController implements Initializable {
 		profilingToggle();
 		rdbLevel1();
 		sliderChange();
+		treeViewSelectCollection();
+		enableProfiling();
+		deleteProfile();
+	}
+	
+	private void deleteProfile(){
+		btnDeleteProfile.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				DbHelper.deleteProfilingInfo(selectedDbName);
+			}
+		});
+	}
+	
+	private void enableProfiling(){
+		btnProfile.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				int option = rdbProfile1.isSelected() == true ? 1 : 2;
+				int millis = (int)sldThreshold.getValue();
+				DbHelper.setProfilingLevel(selectedDbName, option, millis);
+			}
+		});
+	}
+	
+	private void treeViewSelectCollection(){
+		trvDBandCollections.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
+			@Override
+			public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue,
+					TreeItem<String> newValue) {
+				String dbName = "";
+				if (newValue.isLeaf()){
+					dbName = newValue.getParent().getValue();
+					selectedCollectionName = newValue.getValue();
+				}else if(newValue.getParent()!=null){
+					dbName = newValue.getValue();
+					selectedCollectionName = "";
+				}
+				if(!dbName.isEmpty()){
+					selectedDbName = dbName;
+					ProfilingLevel result = DbHelper.getProfilingLevel(dbName);
+					if(result!=null){
+						switchToggle(result.getProfileLevel());
+						selectRadioButton(result.getProfileLevel());
+						sldThreshold.setValue(result.getSlowMs());
+					}
+				}
+			}
+        });
+	}
+	
+	private void switchToggle(int level){
+		switch (level) {
+		case 0:
+			tgEnableProfiling.setSelected(false);
+			break;
+		case 1:
+		case 2:
+			tgEnableProfiling.setSelected(true);
+		default:
+			break;
+		}
+	}
+	
+	private void selectRadioButton(int level){
+		switch (level) {
+		case 0:
+			break;
+		case 1:
+			rdbProfile1.setSelected(true);
+			lblQueryThreshold.setVisible(true);
+			lblThresholdValue.setVisible(true);
+			sldThreshold.setVisible(true);
+			break;
+		case 2:
+			rdbProfile2.setSelected(true);
+			lblQueryThreshold.setVisible(false);
+			lblThresholdValue.setVisible(false);
+			sldThreshold.setVisible(false);
+		default:
+			break;
+		}
 	}
 	
 	private void profilingToggle(){
 		tgEnableProfiling.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if(newValue)
+				if(newValue){
 					pnlProfilingOptions.setVisible(true);
-				else
+					btnDeleteProfile.setVisible(true);
+				}else{
+					if(oldValue)
+						DbHelper.setProfilingLevel(selectedDbName, 0, (int)sldThreshold.getValue());
 					pnlProfilingOptions.setVisible(false);
+					btnDeleteProfile.setVisible(false);
+				}
 			}
 		});
 	}
@@ -89,12 +186,10 @@ public class FrmMainController implements Initializable {
 					lblThresholdValue.setVisible(true);
 					int value = (int)sldThreshold.getValue();
 					lblThresholdValue.setText(String.valueOf(value));
-					btnProfile.setVisible(true);
 				}else{
 					lblQueryThreshold.setVisible(false);
 					sldThreshold.setVisible(false);
 					lblThresholdValue.setVisible(false);
-					btnProfile.setVisible(false);
 				}
 			}
 		});

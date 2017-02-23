@@ -32,13 +32,14 @@
                         <ToggleGroup fx:id="rdbProfile" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton id="rdbProfile2" layoutX="47.0" layoutY="23.0" mnemonicParsing="false" text="2" toggleGroup="$rdbProfile" />
+                  <RadioButton id="rdbProfile2" fx:id="rdbProfile2" layoutX="47.0" layoutY="23.0" mnemonicParsing="false" text="2" toggleGroup="$rdbProfile" />
                   <Label id="lblQueryThreshold" fx:id="lblQueryThreshold" layoutX="14.0" layoutY="49.0" text="Query threshold" visible="false" />
                   <Slider id="sldThreshold" fx:id="sldThreshold" layoutX="9.0" layoutY="66.0" max="10000.0" min="10.0" snapToTicks="true" value="100.0" visible="false" />
                   <Label id="lblThresholdValue" fx:id="lblThresholdValue" layoutX="59.0" layoutY="75.0" visible="false" />
-                  <Button id="btnProfile" fx:id="btnProfile" layoutX="15.0" layoutY="92.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="125.0" text="Profile" visible="false" />
+                  <Button id="btnProfile" fx:id="btnProfile" layoutX="15.0" layoutY="92.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="125.0" text="Profile" />
                </children>
             </Pane>
+            <Button id="btnDeleteProfile" fx:id="btnDeleteProfile" layoutX="14.0" layoutY="84.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" text="Delete profile" visible="false" />
          </children>
       </Pane>
    </children>

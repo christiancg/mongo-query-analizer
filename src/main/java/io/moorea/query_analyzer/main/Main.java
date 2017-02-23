@@ -3,7 +3,6 @@ package io.moorea.query_analyzer.main;
 
 import java.io.IOException;
 
-import io.moorea.query_analyzer.formcontrollers.FrmConnectionController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

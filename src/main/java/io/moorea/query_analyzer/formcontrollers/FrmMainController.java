@@ -67,8 +67,7 @@ public class FrmMainController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadEvents();
-		loadDatabases();
-		writeIntoTreeView();
+		loadTreeView();
 	}
 	
 	private void loadEvents(){
@@ -85,6 +84,7 @@ public class FrmMainController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				DbHelper.deleteProfilingInfo(selectedDbName);
+				loadTreeView();
 			}
 		});
 	}
@@ -106,7 +106,7 @@ public class FrmMainController implements Initializable {
 			public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue,
 					TreeItem<String> newValue) {
 				String dbName = "";
-				if (newValue.isLeaf()){
+				if (newValue.isLeaf() && !newValue.getValue().equals("Databases")){
 					dbName = newValue.getParent().getValue();
 					selectedCollectionName = newValue.getValue();
 				}else if(newValue.getParent()!=null){
@@ -204,7 +204,9 @@ public class FrmMainController implements Initializable {
 		});
 	}
 
-	private void writeIntoTreeView(){
+	private void loadTreeView(){
+		loadDatabases();
+		rootNode.getChildren().clear();
 		for (String string : DBs) {
 			TreeItem<String> item = new TreeItem<String>(string);
 			rootNode.getChildren().add(item);
@@ -219,6 +221,7 @@ public class FrmMainController implements Initializable {
 	}
 	
 	private void loadDatabases(){
+		DBs = new ArrayList<String>();
 		MongoIterable<String> rdb = DbHelper.getDatabases();
 		if(rdb!=null)
 			for (String string : rdb)

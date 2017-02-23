@@ -64,7 +64,10 @@ public class DbHelper {
 	
 	public static boolean deleteProfilingInfo(String dbName){
 		try {
+			ProfilingLevel plNow = getProfilingLevel(dbName);
+			setProfilingLevel(dbName, 0, plNow.getSlowMs());
 			DbConnectionSingleton.getConnection().getDatabase(dbName).getCollection("system.profile").drop();
+			setProfilingLevel(dbName, plNow.getProfileLevel(), plNow.getSlowMs());
 			return true;
 		} catch (Exception e) {
 			return false;

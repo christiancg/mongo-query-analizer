@@ -7,12 +7,38 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="669.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.moorea.query_analyzer.formcontrollers.FrmMainController">
+<AnchorPane prefHeight="669.0" prefWidth="841.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.moorea.query_analyzer.formcontrollers.FrmMainController">
    <children>
       <Pane id="pnlTreeView" layoutX="14.0" layoutY="14.0" prefHeight="506.0" prefWidth="289.0">
          <children>
             <Label id="lblDBandCollections" layoutX="14.0" layoutY="14.0" text="DBs and Collections" />
             <TreeView id="trvDBandCollections" fx:id="trvDBandCollections" layoutX="15.0" layoutY="43.0" prefHeight="450.0" prefWidth="260.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="303.0" layoutY="14.0" prefHeight="506.0" prefWidth="529.0">
+         <children>
+            <Label id="lblIndexes" layoutX="14.0" layoutY="14.0" text="Indexes in collection" />
+         </children>
+      </Pane>
+      <Pane layoutX="14.0" layoutY="520.0" prefHeight="136.0" prefWidth="289.0">
+         <children>
+            <Label id="lblProfile" fx:id="lblProfile" layoutX="14.0" layoutY="14.0" text="Profiling" />
+            <ToggleButton id="tgEnableProfiling" fx:id="tgEnableProfiling" layoutX="14.0" layoutY="39.0" mnemonicParsing="false" text="Enable profiling" />
+            <Pane id="pnlProfilingOptions" fx:id="pnlProfilingOptions" layoutX="134.0" layoutY="3.0" prefHeight="129.0" prefWidth="152.0" visible="false">
+               <children>
+                  <Label layoutX="14.0" layoutY="6.0" text="Level" />
+                  <RadioButton id="rdbProfile1" fx:id="rdbProfile1" layoutX="14.0" layoutY="23.0" mnemonicParsing="false" text="1">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="rdbProfile" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton id="rdbProfile2" layoutX="47.0" layoutY="23.0" mnemonicParsing="false" text="2" toggleGroup="$rdbProfile" />
+                  <Label id="lblQueryThreshold" fx:id="lblQueryThreshold" layoutX="14.0" layoutY="49.0" text="Query threshold" visible="false" />
+                  <Slider id="sldThreshold" fx:id="sldThreshold" layoutX="9.0" layoutY="66.0" max="10000.0" min="10.0" snapToTicks="true" value="100.0" visible="false" />
+                  <Label id="lblThresholdValue" fx:id="lblThresholdValue" layoutX="59.0" layoutY="75.0" visible="false" />
+                  <Button id="btnProfile" fx:id="btnProfile" layoutX="15.0" layoutY="92.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="125.0" text="Profile" visible="false" />
+               </children>
+            </Pane>
          </children>
       </Pane>
    </children>

@@ -8,10 +8,18 @@ import java.util.ResourceBundle;
 import com.mongodb.client.MongoIterable;
 
 import io.moorea.query_analizer.database.DbHelper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.Pane;
 
 public class FrmMainController implements Initializable {
 
@@ -22,16 +30,83 @@ public class FrmMainController implements Initializable {
 	@FXML
 	private TreeView<String> trvDBandCollections;
 	
+	@FXML
+	private ToggleButton tgEnableProfiling;
+	
+	@FXML
+	private Pane pnlProfilingOptions;
+	
+	@FXML
+	private Button btnProfile;
+	
+	@FXML
+	private Label lblQueryThreshold;
+	
+	@FXML
+	private RadioButton rdbProfile1;
+	
+	@FXML
+	private RadioButton rdbProfile2;
+	
+	@FXML
+	private Slider sldThreshold;
+	
+	@FXML
+	private Label lblThresholdValue;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
 		loadEvents();
 		loadDatabases();
 		writeIntoTreeView();
 	}
 	
 	private void loadEvents(){
-		
+		profilingToggle();
+		rdbLevel1();
+		sliderChange();
+	}
+	
+	private void profilingToggle(){
+		tgEnableProfiling.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if(newValue)
+					pnlProfilingOptions.setVisible(true);
+				else
+					pnlProfilingOptions.setVisible(false);
+			}
+		});
+	}
+	
+	private void rdbLevel1(){
+		rdbProfile1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if(newValue){
+					lblQueryThreshold.setVisible(true);
+					sldThreshold.setVisible(true);
+					lblThresholdValue.setVisible(true);
+					int value = (int)sldThreshold.getValue();
+					lblThresholdValue.setText(String.valueOf(value));
+					btnProfile.setVisible(true);
+				}else{
+					lblQueryThreshold.setVisible(false);
+					sldThreshold.setVisible(false);
+					lblThresholdValue.setVisible(false);
+					btnProfile.setVisible(false);
+				}
+			}
+		});
+	}
+	
+	private void sliderChange(){
+		sldThreshold.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				lblThresholdValue.setText(String.valueOf(newValue.intValue()));
+			}
+		});
 	}
 
 	private void writeIntoTreeView(){

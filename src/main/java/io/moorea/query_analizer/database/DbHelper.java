@@ -37,8 +37,8 @@ public class DbHelper {
 			BsonDocument bd = BsonDocument.parse("{profile:0}");
 			Bson toRun = (Bson)bd;
 			Document result = DbConnectionSingleton.getConnection().getDatabase(dbName).runCommand(toRun);
-			int profLevel = (int) result.get("was");
-			int slowMs = (int) result.get("slowms");
+			int profLevel = result.getInteger("was");
+			int slowMs = result.getInteger("slowms");
 			bd = BsonDocument.parse("{profile:"+ String.valueOf(profLevel) +"}");
 			toRun = (Bson)bd;
 			DbConnectionSingleton.getConnection().getDatabase(dbName).runCommand(toRun);
@@ -53,7 +53,7 @@ public class DbHelper {
 			BsonDocument bd = BsonDocument.parse("{profile:"+level+",slowms:"+slowMs+"}");
 			Bson toRun = (Bson)bd;
 			Document result = DbConnectionSingleton.getConnection().getDatabase(dbName).runCommand(toRun);
-			if(((int)result.get("ok"))==1)
+			if(result.getDouble("ok")==1)
 				return true;
 			else
 				return false;

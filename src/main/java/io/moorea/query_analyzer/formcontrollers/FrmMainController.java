@@ -27,106 +27,118 @@ import javafx.scene.layout.Pane;
 public class FrmMainController implements Initializable {
 
 	private List<String> DBs = new ArrayList<String>();
-	
-    TreeItem<String> rootNode = new TreeItem<String>("Databases");
-	
+
+	TreeItem<String> rootNode = new TreeItem<String>("Databases");
+
 	@FXML
 	private TreeView<String> trvDBandCollections;
-	
+
 	@FXML
 	private ToggleButton tgEnableProfiling;
-	
+
 	@FXML
 	private Pane pnlProfilingOptions;
-	
+
 	@FXML
 	private Button btnProfile;
-	
+
 	@FXML
 	private Button btnDeleteProfile;
-	
+
 	@FXML
 	private Label lblQueryThreshold;
-	
+
 	@FXML
 	private RadioButton rdbProfile1;
-	
+
 	@FXML
 	private RadioButton rdbProfile2;
-	
+
 	@FXML
 	private Slider sldThreshold;
-	
+
 	@FXML
 	private Label lblThresholdValue;
-	
+
+	@FXML
+	private Button btnRefreshTreeView;
+
 	private String selectedDbName = "";
-	
+
 	private String selectedCollectionName = "";
-	
-	@Override
+
+	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		loadEvents();
 		loadTreeView();
 	}
-	
-	private void loadEvents(){
+
+	private void loadEvents() {
 		profilingToggle();
 		rdbLevel1();
 		sliderChange();
 		treeViewSelectCollection();
 		enableProfiling();
 		deleteProfile();
+		refreshTreeView();
 	}
-	
-	private void deleteProfile(){
+
+	private void refreshTreeView() {
+		btnRefreshTreeView.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				loadTreeView();
+			}
+		});
+	}
+
+	private void deleteProfile() {
 		btnDeleteProfile.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
 			public void handle(ActionEvent event) {
 				DbHelper.deleteProfilingInfo(selectedDbName);
 				loadTreeView();
 			}
 		});
 	}
-	
-	private void enableProfiling(){
+
+	private void enableProfiling() {
 		btnProfile.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
 			public void handle(ActionEvent event) {
 				int option = rdbProfile1.isSelected() == true ? 1 : 2;
-				int millis = (int)sldThreshold.getValue();
+				int millis = (int) sldThreshold.getValue();
 				DbHelper.setProfilingLevel(selectedDbName, option, millis);
 			}
 		});
 	}
-	
-	private void treeViewSelectCollection(){
-		trvDBandCollections.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
-			@Override
-			public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue,
-					TreeItem<String> newValue) {
-				String dbName = "";
-				if (newValue.isLeaf() && !newValue.getValue().equals("Databases")){
-					dbName = newValue.getParent().getValue();
-					selectedCollectionName = newValue.getValue();
-				}else if(newValue.getParent()!=null){
-					dbName = newValue.getValue();
-					selectedCollectionName = "";
-				}
-				if(!dbName.isEmpty()){
-					selectedDbName = dbName;
-					ProfilingLevel result = DbHelper.getProfilingLevel(dbName);
-					if(result!=null){
-						switchToggle(result.getProfileLevel());
-						selectRadioButton(result.getProfileLevel());
-						sldThreshold.setValue(result.getSlowMs());
+
+	private void treeViewSelectCollection() {
+		trvDBandCollections.getSelectionModel().selectedItemProperty()
+				.addListener(new ChangeListener<TreeItem<String>>() {
+					public void changed(ObservableValue<? extends TreeItem<String>> observable,
+							TreeItem<String> oldValue, TreeItem<String> newValue) {
+						if (newValue != null) {
+							String dbName = "";
+							if (newValue.isLeaf() && !newValue.getValue().equals("Databases")) {
+								dbName = newValue.getParent().getValue();
+								selectedCollectionName = newValue.getValue();
+							} else if (newValue.getParent() != null) {
+								dbName = newValue.getValue();
+								selectedCollectionName = "";
+							}
+							if (!dbName.isEmpty()) {
+								selectedDbName = dbName;
+								ProfilingLevel result = DbHelper.getProfilingLevel(dbName);
+								if (result != null) {
+									switchToggle(result.getProfileLevel());
+									selectRadioButton(result.getProfileLevel());
+									sldThreshold.setValue(result.getSlowMs());
+								}
+							}
+						}
 					}
-				}
-			}
-        });
+				});
 	}
-	
-	private void switchToggle(int level){
+
+	private void switchToggle(int level) {
 		switch (level) {
 		case 0:
 			tgEnableProfiling.setSelected(false);
@@ -138,8 +150,8 @@ public class FrmMainController implements Initializable {
 			break;
 		}
 	}
-	
-	private void selectRadioButton(int level){
+
+	private void selectRadioButton(int level) {
 		switch (level) {
 		case 0:
 			break;
@@ -158,35 +170,33 @@ public class FrmMainController implements Initializable {
 			break;
 		}
 	}
-	
-	private void profilingToggle(){
+
+	private void profilingToggle() {
 		tgEnableProfiling.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if(newValue){
+				if (newValue) {
 					pnlProfilingOptions.setVisible(true);
 					btnDeleteProfile.setVisible(true);
-				}else{
-					if(oldValue)
-						DbHelper.setProfilingLevel(selectedDbName, 0, (int)sldThreshold.getValue());
+				} else {
+					if (oldValue)
+						DbHelper.setProfilingLevel(selectedDbName, 0, (int) sldThreshold.getValue());
 					pnlProfilingOptions.setVisible(false);
 					btnDeleteProfile.setVisible(false);
 				}
 			}
 		});
 	}
-	
-	private void rdbLevel1(){
+
+	private void rdbLevel1() {
 		rdbProfile1.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if(newValue){
+				if (newValue) {
 					lblQueryThreshold.setVisible(true);
 					sldThreshold.setVisible(true);
 					lblThresholdValue.setVisible(true);
-					int value = (int)sldThreshold.getValue();
+					int value = (int) sldThreshold.getValue();
 					lblThresholdValue.setText(String.valueOf(value));
-				}else{
+				} else {
 					lblQueryThreshold.setVisible(false);
 					sldThreshold.setVisible(false);
 					lblThresholdValue.setVisible(false);
@@ -194,24 +204,23 @@ public class FrmMainController implements Initializable {
 			}
 		});
 	}
-	
-	private void sliderChange(){
+
+	private void sliderChange() {
 		sldThreshold.valueProperty().addListener(new ChangeListener<Number>() {
-			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				lblThresholdValue.setText(String.valueOf(newValue.intValue()));
 			}
 		});
 	}
 
-	private void loadTreeView(){
+	private void loadTreeView() {
 		loadDatabases();
 		rootNode.getChildren().clear();
 		for (String string : DBs) {
 			TreeItem<String> item = new TreeItem<String>(string);
 			rootNode.getChildren().add(item);
 			MongoIterable<String> collections = DbHelper.getCollections(string);
-			if(collections!=null)
+			if (collections != null)
 				for (String string2 : collections) {
 					TreeItem<String> child = new TreeItem<String>(string2);
 					item.getChildren().add(child);
@@ -219,11 +228,11 @@ public class FrmMainController implements Initializable {
 		}
 		trvDBandCollections.setRoot(rootNode);
 	}
-	
-	private void loadDatabases(){
+
+	private void loadDatabases() {
 		DBs = new ArrayList<String>();
 		MongoIterable<String> rdb = DbHelper.getDatabases();
-		if(rdb!=null)
+		if (rdb != null)
 			for (String string : rdb)
 				DBs.add(string);
 	}

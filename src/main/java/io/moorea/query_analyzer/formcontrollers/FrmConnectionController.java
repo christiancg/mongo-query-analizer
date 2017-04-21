@@ -54,14 +54,13 @@ public class FrmConnectionController implements Initializable {
     @FXML
     private Pane pnlAuthentication;
 	
-	@Override
+    @FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		initializeChkAuthentication();
 	}
 	
 	private void initializeChkAuthentication(){
 		chkUsesAuthentication.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if(newValue)
 					pnlAuthentication.setVisible(true);

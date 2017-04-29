@@ -7,8 +7,8 @@ import java.util.ResourceBundle;
 
 import com.mongodb.client.MongoIterable;
 
+import io.moorea.datamodel.ProfilingLevel;
 import io.moorea.query_analizer.database.DbHelper;
-import io.moorea.query_analizer.database.ProfilingLevel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -120,6 +120,7 @@ public class FrmMainController implements Initializable {
 							if (newValue.isLeaf() && !newValue.getValue().equals("Databases")) {
 								dbName = newValue.getParent().getValue();
 								selectedCollectionName = newValue.getValue();
+								setCollectionStatsView(selectedCollectionName);
 							} else if (newValue.getParent() != null) {
 								dbName = newValue.getValue();
 								selectedCollectionName = "";
@@ -136,6 +137,10 @@ public class FrmMainController implements Initializable {
 						}
 					}
 				});
+	}
+	
+	private void setCollectionStatsView(String collectionName){
+		
 	}
 
 	private void switchToggle(int level) {

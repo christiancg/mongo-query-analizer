@@ -1,4 +1,4 @@
-package io.moorea.query_analizer.database;
+package io.moorea.datamodel;
 
 public class ProfilingLevel {
 	private int profileLevel;

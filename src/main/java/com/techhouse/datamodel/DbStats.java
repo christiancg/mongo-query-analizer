@@ -5,12 +5,12 @@ public class DbStats {
 	private int numCollections;
 	private int numViews;
 	private int numObjects;
-	private int avgObjectSize;
-	private int dataSize;
-	private int storageSize;
+	private double avgObjectSize;
+	private double dataSize;
+	private double storageSize;
 	private int numExtents;
 	private int numIndexes;
-	private int totalIndexSize;
+	private double totalIndexSize;
 	public String getDbName() {
 		return DbName;
 	}
@@ -35,19 +35,19 @@ public class DbStats {
 	public void setNumObjects(int numObjects) {
 		this.numObjects = numObjects;
 	}
-	public int getAvgObjectSize() {
+	public double getAvgObjectSize() {
 		return avgObjectSize;
 	}
 	public void setAvgObjectSize(int avgObjectSize) {
 		this.avgObjectSize = avgObjectSize;
 	}
-	public int getDataSize() {
+	public double getDataSize() {
 		return dataSize;
 	}
 	public void setDataSize(int dataSize) {
 		this.dataSize = dataSize;
 	}
-	public int getStorageSize() {
+	public double getStorageSize() {
 		return storageSize;
 	}
 	public void setStorageSize(int storageSize) {
@@ -65,14 +65,14 @@ public class DbStats {
 	public void setNumIndexes(int numIndexes) {
 		this.numIndexes = numIndexes;
 	}
-	public int getTotalIndexSize() {
+	public double getTotalIndexSize() {
 		return totalIndexSize;
 	}
 	public void setTotalIndexSize(int totalIndexSize) {
 		this.totalIndexSize = totalIndexSize;
 	}
-	public DbStats(String dbName, int numCollections, int numViews, int numObjects, int avgObjectSize, int dataSize,
-			int storageSize, int numExtents, int numIndexes, int totalIndexSize) {
+	public DbStats(String dbName, int numCollections, int numViews, int numObjects, double avgObjectSize, double dataSize,
+			double storageSize, int numExtents, int numIndexes, double totalIndexSize) {
 		super();
 		DbName = dbName;
 		this.numCollections = numCollections;

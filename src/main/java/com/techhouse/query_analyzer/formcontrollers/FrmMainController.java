@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import com.mongodb.client.MongoIterable;
 import com.techhouse.datamodel.CollectionStats;
+import com.techhouse.datamodel.DbStats;
 import com.techhouse.datamodel.ProfilingLevel;
 import com.techhouse.query_analizer.database.DbHelper;
 
@@ -72,9 +73,9 @@ public class FrmMainController implements Initializable {
 
 	private String selectedCollectionName = "";
 
-	// Panel stats and contents
+	// Panel collection stats and contents
 	@FXML
-	private Pane pnlStats;
+	private Pane pnlColStats;
 
 	@FXML
 	private TextField txtSize;
@@ -97,6 +98,40 @@ public class FrmMainController implements Initializable {
 	@FXML
 	private TextArea txtIndexes;
 
+	// Panel db stats and contents
+	@FXML
+	private Pane pnlDbStats;
+	
+	@FXML
+	private TextField txtDbName;
+
+	@FXML
+	private TextField txtCollectionCountDb;
+
+	@FXML
+	private TextField txtViewSizeDb;
+
+	@FXML
+	private TextField txtNumObjectsDb;
+
+	@FXML
+	private TextField txtAvgObjSizeDb;
+
+	@FXML
+	private TextField txtDataSizeDb;
+	
+	@FXML
+	private TextField txtStorageSizeDb;
+	
+	@FXML
+	private TextField txtNumExtentsDb;
+	
+	@FXML
+	private TextField txtNumIndexesDb;
+	
+	@FXML
+	private TextField txtTotalIndexSizeDb;
+	
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		loadEvents();
@@ -156,6 +191,7 @@ public class FrmMainController implements Initializable {
 								dbName = newValue.getValue();
 								selectedDbName = dbName;
 								selectedCollectionName = "";
+								setDbStatsView(dbName);
 							}
 							if (!dbName.isEmpty()) {
 								ProfilingLevel result = DbHelper.getProfilingLevel(dbName);
@@ -172,6 +208,8 @@ public class FrmMainController implements Initializable {
 
 	private void setCollectionStatsView(String dbName, String collectionName) {
 		CollectionStats colStats = DbHelper.getCollectionStats(dbName, collectionName);
+		pnlDbStats.setVisible(false);
+		pnlColStats.setVisible(true);
 		if (colStats != null) {
 			txtSize.setText(String.valueOf(colStats.getSize()));
 			txtAvgObjSize.setText(String.valueOf(colStats.getAvgObjectSize()));
@@ -182,6 +220,24 @@ public class FrmMainController implements Initializable {
 			txtIndexes.clear();
 			for (Map.Entry<String, Integer> entry : colStats.getlIndexSize().entrySet()) 
 				txtIndexes.appendText(entry.getKey() + ": " + entry.getValue() + "\n");
+		}
+	}
+	
+	private void setDbStatsView(String dbName) {
+		DbStats dbStats = DbHelper.getDbStats(dbName);
+		pnlDbStats.setVisible(true);
+		pnlColStats.setVisible(false);
+		if (dbStats != null) {
+			txtDbName.setText(dbStats.getDbName());
+			txtCollectionCountDb.setText(String.valueOf(dbStats.getNumCollections()));
+			txtViewSizeDb.setText(String.valueOf(dbStats.getNumViews()));
+			txtNumObjectsDb.setText(String.valueOf(dbStats.getNumObjects()));
+			txtAvgObjSizeDb.setText(String.valueOf(dbStats.getAvgObjectSize()));
+			txtDataSizeDb.setText(String.valueOf(dbStats.getDataSize()));
+			txtStorageSizeDb.setText(String.valueOf(dbStats.getStorageSize()));
+			txtNumExtentsDb.setText(String.valueOf(dbStats.getNumExtents()));
+			txtNumIndexesDb.setText(String.valueOf(dbStats.getNumIndexes()));
+			txtTotalIndexSizeDb.setText(String.valueOf(dbStats.getTotalIndexSize()));
 		}
 	}
 

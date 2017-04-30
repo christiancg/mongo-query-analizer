@@ -23,15 +23,15 @@
             <Button id="btnRefreshTreeView" fx:id="btnRefreshTreeView" layoutX="247.0" layoutY="10.0" mnemonicParsing="false" text="Refresh" />
          </children>
       </Pane>
-      <Pane id="pnlStats" fx:id="pnlStats" layoutX="331.0" layoutY="14.0" prefHeight="513.0" prefWidth="498.0">
+      <Pane id="pnlStats" fx:id="pnlColStats" layoutX="331.0" layoutY="14.0" prefHeight="513.0" prefWidth="498.0" visible="false">
          <children>
-            <Label id="lblIndexes" fx:id="lblIndexes" layoutX="179.0" layoutY="14.0" prefHeight="24.0" prefWidth="140.0" text="Collection stats">
+            <Label id="lblTitleStatsCol" fx:id="lblTitleStatsCol" layoutX="179.0" layoutY="14.0" prefHeight="24.0" prefWidth="140.0" text="Collection stats">
                <font>
                   <Font name="Cambria" size="20.0" />
                </font></Label>
             <Label id="lblSize" fx:id="lblSize" layoutX="14.0" layoutY="41.0" prefHeight="17.0" prefWidth="105.0" text="Size:" />
             <Label id="lblDocumentCount" fx:id="lblDocumentCount" layoutX="14.0" layoutY="69.0" prefHeight="17.0" prefWidth="105.0" text="Document count:" />
-            <Label id="lblAvgObjectSize" layoutX="14.0" layoutY="97.0" prefHeight="17.0" prefWidth="105.0" text="Avg. object size:" />
+            <Label id="lblAvgObjectSizeCol" fx:id="lblAvgObjectSizeCol" layoutX="14.0" layoutY="97.0" prefHeight="17.0" prefWidth="105.0" text="Avg. object size:" />
             <Label id="lblStorageSize" fx:id="lblStorageSize" layoutX="14.0" layoutY="125.0" prefHeight="17.0" prefWidth="105.0" text="Storage size:" />
             <Label id="lblCapped" fx:id="lblCapped" layoutX="14.0" layoutY="183.0" prefHeight="17.0" prefWidth="105.0" text="Capped:" />
             <Label id="lblTotalIndexSize" fx:id="lblTotalIndexSize" layoutX="14.0" layoutY="154.0" prefHeight="17.0" prefWidth="105.0" text="Total index size:" />
@@ -45,7 +45,36 @@
             <TextArea id="txtIndexes" fx:id="txtIndexes" editable="false" layoutX="119.0" layoutY="219.0" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </Pane>
-      <Pane layoutX="14.0" layoutY="520.0" prefHeight="136.0" prefWidth="289.0">
+      <Pane id="pnlStats" fx:id="pnlDbStats" layoutX="331.0" layoutY="14.0" prefHeight="513.0" prefWidth="498.0" visible="false">
+         <children>
+            <Label id="lblTitle" fx:id="lblTitle" layoutX="179.0" layoutY="14.0" prefHeight="24.0" prefWidth="140.0" text="Db stats">
+               <font>
+                  <Font name="Cambria" size="20.0" />
+               </font>
+            </Label>
+            <Label id="lblDbName" fx:id="lblDbName" layoutX="14.0" layoutY="41.0" prefHeight="17.0" prefWidth="105.0" text="Db Name:" />
+            <Label id="lblNumCollections" fx:id="lblNumCollections" layoutX="14.0" layoutY="69.0" prefHeight="17.0" prefWidth="105.0" text="Collection count:" />
+            <Label id="lblNumViews" fx:id="lblNumViews" layoutX="14.0" layoutY="97.0" prefHeight="17.0" prefWidth="105.0" text="View count:" />
+            <Label id="lblNumObjects" fx:id="lblNumObjects" layoutX="14.0" layoutY="125.0" prefHeight="17.0" prefWidth="105.0" text="Number of objects:" />
+            <Label id="lblDataSize" fx:id="lblDataSize" layoutX="14.0" layoutY="181.0" prefHeight="17.0" prefWidth="105.0" text="Data size:" />
+            <Label id="lblStorageSizeDb" fx:id="lblStorageSizeDb" layoutX="14.0" layoutY="209.0" prefHeight="17.0" prefWidth="105.0" text="Storage size:" />
+            <Label fx:id="lblNumIndexesDb" layoutX="14.0" layoutY="267.0" prefHeight="17.0" prefWidth="105.0" text="Number of indexes:" />
+            <TextField id="txtSize" fx:id="txtDbName" editable="false" layoutX="119.0" layoutY="37.0" />
+            <TextField fx:id="txtCollectionCountDb" editable="false" layoutX="119.0" layoutY="65.0" />
+            <TextField fx:id="txtViewSizeDb" editable="false" layoutX="119.0" layoutY="93.0" />
+            <TextField fx:id="txtNumObjectsDb" editable="false" layoutX="119.0" layoutY="121.0" />
+            <TextField fx:id="txtNumExtentsDb" editable="false" layoutX="119.0" layoutY="234.0" />
+            <Label id="lblAvgObjSizeDb" fx:id="lblAvgObjSizeDb" layoutX="14.0" layoutY="153.0" prefHeight="17.0" prefWidth="105.0" text="Avg. object size:" />
+            <TextField fx:id="txtAvgObjSizeDb" editable="false" layoutX="119.0" layoutY="149.0" />
+            <TextField id="txtDataSizeDb" fx:id="txtDataSizeDb" editable="false" layoutX="119.0" layoutY="177.0" />
+            <TextField fx:id="txtStorageSizeDb" editable="false" layoutX="119.0" layoutY="205.0" />
+            <Label id="lblStorageSizeDb" fx:id="lblNumExtentsDb" layoutX="14.0" layoutY="238.0" prefHeight="17.0" prefWidth="105.0" text="Extent count:" />
+            <TextField fx:id="txtNumIndexesDb" editable="false" layoutX="119.0" layoutY="263.0" />
+            <Label fx:id="lblTotalIndexSizeDb" layoutX="14.0" layoutY="296.0" prefHeight="17.0" prefWidth="105.0" text="Total index size:" />
+            <TextField fx:id="txtTotalIndexSizeDb" editable="false" layoutX="119.0" layoutY="292.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="14.0" layoutY="520.0" prefHeight="136.0" prefWidth="317.0">
          <children>
             <Label id="lblProfile" fx:id="lblProfile" layoutX="14.0" layoutY="14.0" text="Profiling" />
             <ToggleButton id="tgEnableProfiling" fx:id="tgEnableProfiling" layoutX="14.0" layoutY="39.0" mnemonicParsing="false" text="Enable profiling" />

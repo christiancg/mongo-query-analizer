@@ -13,9 +13,9 @@ public class DBInfoResponseParser {
 		DbStats result = null;
 		try {
 			result = new DbStats(toParse.getString("db"), toParse.getInteger("collections"),
-					toParse.getInteger("views"), toParse.getInteger("objects"), toParse.getInteger("avgObjSize"),
-					toParse.getInteger("dataSize"), toParse.getInteger("storageSize"), toParse.getInteger("numExtents"),
-					toParse.getInteger("indexes"), toParse.getInteger("indexSize"));
+					toParse.getInteger("views"), toParse.getInteger("objects"), toParse.getDouble("avgObjSize"),
+					toParse.getDouble("dataSize"), toParse.getDouble("storageSize"), toParse.getInteger("numExtents"),
+					toParse.getInteger("indexes"), toParse.getDouble("indexSize"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

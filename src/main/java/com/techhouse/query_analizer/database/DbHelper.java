@@ -1,4 +1,4 @@
-package io.moorea.query_analizer.database;
+package com.techhouse.query_analizer.database;
 
 import org.bson.BsonDocument;
 import org.bson.Document;
@@ -6,10 +6,9 @@ import org.bson.conversions.Bson;
 
 import com.mongodb.client.ListIndexesIterable;
 import com.mongodb.client.MongoIterable;
-
-import io.moorea.datamodel.CollectionStats;
-import io.moorea.datamodel.DbStats;
-import io.moorea.datamodel.ProfilingLevel;
+import com.techhouse.datamodel.CollectionStats;
+import com.techhouse.datamodel.DbStats;
+import com.techhouse.datamodel.ProfilingLevel;
 
 public class DbHelper {
 	public static MongoIterable<String> getDatabases() {

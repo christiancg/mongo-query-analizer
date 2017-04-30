@@ -1,17 +1,16 @@
-package io.moorea.query_analyzer.formcontrollers;
+package com.techhouse.query_analyzer.formcontrollers;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.mongodb.client.MongoIterable;
+import com.techhouse.datamodel.CollectionStats;
+import com.techhouse.datamodel.ProfilingLevel;
+import com.techhouse.query_analizer.database.DbHelper;
 
-import io.moorea.datamodel.CollectionStats;
-import io.moorea.datamodel.ProfilingLevel;
-import io.moorea.query_analizer.database.DbHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;

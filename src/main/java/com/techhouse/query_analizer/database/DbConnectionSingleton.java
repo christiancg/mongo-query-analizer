@@ -1,4 +1,4 @@
-package io.moorea.query_analizer.database;
+package com.techhouse.query_analizer.database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,7 @@ import java.util.List;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-
-import io.moorea.query_analizer.configuration.Configuration;
+import com.techhouse.query_analizer.configuration.Configuration;
 
 public class DbConnectionSingleton {
 	private static DbConnectionSingleton instance = null;

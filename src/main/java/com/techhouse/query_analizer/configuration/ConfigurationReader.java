@@ -1,4 +1,4 @@
-package io.moorea.query_analizer.configuration;
+package com.techhouse.query_analizer.configuration;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package io.moorea.query_analyzer.main;
+package com.techhouse.query_analyzer.main;
 
 
 import java.io.IOException;

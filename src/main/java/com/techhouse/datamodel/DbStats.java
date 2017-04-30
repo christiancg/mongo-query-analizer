@@ -1,4 +1,4 @@
-package io.moorea.datamodel;
+package com.techhouse.datamodel;
 
 public class DbStats {
 	private String DbName;

@@ -1,8 +1,6 @@
-package io.moorea.datamodel;
+package com.techhouse.datamodel;
 
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 public class CollectionStats {

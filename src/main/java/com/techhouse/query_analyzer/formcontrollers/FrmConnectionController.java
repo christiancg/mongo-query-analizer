@@ -1,11 +1,12 @@
-package io.moorea.query_analyzer.formcontrollers;
+package com.techhouse.query_analyzer.formcontrollers;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import io.moorea.query_analizer.configuration.Configuration;
-import io.moorea.query_analizer.database.DbConnectionSingleton;
+import com.techhouse.query_analizer.configuration.Configuration;
+import com.techhouse.query_analizer.database.DbConnectionSingleton;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;

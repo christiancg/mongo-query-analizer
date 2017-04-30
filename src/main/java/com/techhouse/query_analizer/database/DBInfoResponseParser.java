@@ -1,13 +1,12 @@
-package io.moorea.query_analizer.database;
+package com.techhouse.query_analizer.database;
 
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 import org.bson.Document;
-import io.moorea.datamodel.CollectionStats;
-import io.moorea.datamodel.DbStats;
+
+import com.techhouse.datamodel.CollectionStats;
+import com.techhouse.datamodel.DbStats;
 
 public class DBInfoResponseParser {
 	public static DbStats parseDbStats(Document toParse) {

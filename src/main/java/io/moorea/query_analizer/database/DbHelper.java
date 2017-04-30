@@ -96,7 +96,7 @@ public class DbHelper {
 	public static CollectionStats getCollectionStats(String dbName, String collectionName) {
 		CollectionStats result = null;
 		try {
-			BsonDocument col = BsonDocument.parse(" { collStats: "+ collectionName +" , scale: 1 , verbose: false }");
+			BsonDocument col = BsonDocument.parse(" { collStats: '"+ collectionName +"' , scale: 1 , verbose: false }");
 			Bson toRun = (Bson) col;
 			Document rawResult = DbConnectionSingleton.getConnection().getDatabase(dbName).runCommand(toRun);
 			if(rawResult!=null)

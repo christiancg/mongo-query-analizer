@@ -2,11 +2,14 @@ package io.moorea.query_analyzer.formcontrollers;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.mongodb.client.MongoIterable;
 
+import io.moorea.datamodel.CollectionStats;
 import io.moorea.datamodel.ProfilingLevel;
 import io.moorea.query_analizer.database.DbHelper;
 import javafx.beans.value.ChangeListener;
@@ -16,9 +19,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -66,6 +72,31 @@ public class FrmMainController implements Initializable {
 	private String selectedDbName = "";
 
 	private String selectedCollectionName = "";
+
+	// Panel stats and contents
+	@FXML
+	private Pane pnlStats;
+
+	@FXML
+	private TextField txtSize;
+
+	@FXML
+	private TextField txtDocumentCount;
+
+	@FXML
+	private TextField txtAvgObjSize;
+
+	@FXML
+	private TextField txtStorageSize;
+
+	@FXML
+	private TextField txtTotalIndexSize;
+
+	@FXML
+	private CheckBox chkIsCapped;
+	
+	@FXML
+	private TextArea txtIndexes;
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
@@ -119,14 +150,15 @@ public class FrmMainController implements Initializable {
 							String dbName = "";
 							if (newValue.isLeaf() && !newValue.getValue().equals("Databases")) {
 								dbName = newValue.getParent().getValue();
+								selectedDbName = dbName;
 								selectedCollectionName = newValue.getValue();
-								setCollectionStatsView(selectedCollectionName);
+								setCollectionStatsView(selectedDbName, selectedCollectionName);
 							} else if (newValue.getParent() != null) {
 								dbName = newValue.getValue();
+								selectedDbName = dbName;
 								selectedCollectionName = "";
 							}
 							if (!dbName.isEmpty()) {
-								selectedDbName = dbName;
 								ProfilingLevel result = DbHelper.getProfilingLevel(dbName);
 								if (result != null) {
 									switchToggle(result.getProfileLevel());
@@ -138,9 +170,20 @@ public class FrmMainController implements Initializable {
 					}
 				});
 	}
-	
-	private void setCollectionStatsView(String collectionName){
-		
+
+	private void setCollectionStatsView(String dbName, String collectionName) {
+		CollectionStats colStats = DbHelper.getCollectionStats(dbName, collectionName);
+		if (colStats != null) {
+			txtSize.setText(String.valueOf(colStats.getSize()));
+			txtAvgObjSize.setText(String.valueOf(colStats.getAvgObjectSize()));
+			txtDocumentCount.setText(String.valueOf(colStats.getDocumentCount()));
+			txtStorageSize.setText(String.valueOf(colStats.getStorageSize()));
+			txtTotalIndexSize.setText(String.valueOf(colStats.getTotalIndexSize()));
+			chkIsCapped.setSelected(colStats.isCapped());
+			txtIndexes.clear();
+			for (Map.Entry<String, Integer> entry : colStats.getlIndexSize().entrySet()) 
+				txtIndexes.appendText(entry.getKey() + ": " + entry.getValue() + "\n");
+		}
 	}
 
 	private void switchToggle(int level) {

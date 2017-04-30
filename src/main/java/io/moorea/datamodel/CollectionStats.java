@@ -1,7 +1,9 @@
 package io.moorea.datamodel;
 
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class CollectionStats {
 	private String namespace;
@@ -15,7 +17,7 @@ public class CollectionStats {
 	 * */
 	private int numIndexes;
 	private int totalIndexSize;
-	private Dictionary<String,Integer> lIndexSize = new Hashtable<String, Integer>();
+	private Map<String,Integer> lIndexSize = new HashMap<String, Integer>();
 	public String getNamespace() {
 		return namespace;
 	}
@@ -64,14 +66,14 @@ public class CollectionStats {
 	public void setTotalIndexSize(int totalIndexSize) {
 		this.totalIndexSize = totalIndexSize;
 	}
-	public Dictionary<String, Integer> getlIndexSize() {
+	public Map<String, Integer> getlIndexSize() {
 		return lIndexSize;
 	}
-	public void setlIndexSize(Dictionary<String, Integer> lIndexSize) {
+	public void setlIndexSize(Map<String, Integer> lIndexSize) {
 		this.lIndexSize = lIndexSize;
 	}
 	public CollectionStats(String namespace, int size, int documentCount, int avgObjectSize, int storageSize,
-			boolean isCapped, int numIndexes, int totalIndexSize, Dictionary<String, Integer> lIndexSize) {
+			boolean isCapped, int numIndexes, int totalIndexSize, Map<String, Integer> lIndexSize) {
 		super();
 		this.namespace = namespace;
 		this.size = size;

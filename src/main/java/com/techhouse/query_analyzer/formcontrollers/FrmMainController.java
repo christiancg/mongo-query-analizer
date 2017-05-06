@@ -17,18 +17,23 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class FrmMainController implements Initializable {
 
@@ -94,14 +99,14 @@ public class FrmMainController implements Initializable {
 
 	@FXML
 	private CheckBox chkIsCapped;
-	
+
 	@FXML
 	private TextArea txtIndexes;
 
 	// Panel db stats and contents
 	@FXML
 	private Pane pnlDbStats;
-	
+
 	@FXML
 	private TextField txtDbName;
 
@@ -119,19 +124,22 @@ public class FrmMainController implements Initializable {
 
 	@FXML
 	private TextField txtDataSizeDb;
-	
+
 	@FXML
 	private TextField txtStorageSizeDb;
-	
+
 	@FXML
 	private TextField txtNumExtentsDb;
-	
+
 	@FXML
 	private TextField txtNumIndexesDb;
-	
+
 	@FXML
 	private TextField txtTotalIndexSizeDb;
-	
+
+	@FXML
+	private Button btnShowProfileEntries;
+
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		loadEvents();
@@ -146,6 +154,32 @@ public class FrmMainController implements Initializable {
 		enableProfiling();
 		deleteProfile();
 		refreshTreeView();
+		showProfileEntries();
+	}
+
+	private void showProfileEntries() {
+		btnShowProfileEntries.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				loadProfileEntriesWindow();
+			}
+		});
+	}
+
+	private void loadProfileEntriesWindow() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("forms/FrmProfileEntries.fxml"));
+			Stage stage = new Stage(StageStyle.DECORATED);
+			stage.setTitle("Profile entries - " + selectedDbName);
+			stage.setScene(new Scene((SplitPane) loader.load()));
+			FrmProfileEntriesController controller = loader.<FrmProfileEntriesController>getController();
+			if (selectedCollectionName == null || selectedCollectionName.isEmpty())
+				controller.initData(selectedDbName);
+			else
+				controller.initData(selectedDbName, selectedCollectionName);
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void refreshTreeView() {
@@ -218,11 +252,11 @@ public class FrmMainController implements Initializable {
 			txtTotalIndexSize.setText(String.valueOf(colStats.getTotalIndexSize()));
 			chkIsCapped.setSelected(colStats.isCapped());
 			txtIndexes.clear();
-			for (Map.Entry<String, Integer> entry : colStats.getlIndexSize().entrySet()) 
+			for (Map.Entry<String, Integer> entry : colStats.getlIndexSize().entrySet())
 				txtIndexes.appendText(entry.getKey() + ": " + entry.getValue() + "\n");
 		}
 	}
-	
+
 	private void setDbStatsView(String dbName) {
 		DbStats dbStats = DbHelper.getDbStats(dbName);
 		pnlDbStats.setVisible(true);

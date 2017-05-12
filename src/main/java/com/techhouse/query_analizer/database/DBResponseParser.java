@@ -1,6 +1,7 @@
 package com.techhouse.query_analizer.database;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,14 +47,39 @@ public class DBResponseParser {
 		}
 		return result;
 	}
-	
-	public static List<ProfileEntry> parseProfileEntries(FindIterable<Document> results){
+
+	public static List<ProfileEntry> parseProfileEntries(FindIterable<Document> results) {
 		List<ProfileEntry> parsed = null;
 		try {
 			parsed = new ArrayList<ProfileEntry>();
 			for (Document entry : results) {
 				List<String> lSearchFields = DocumentParser.searchOperators(entry);
-				parsed.add(new ProfileEntry(entry.getInteger("millis"), QueryType.FIND, UsesIndex.NO, lSearchFields));
+				QueryType type = QueryType.fromString(entry.getString("op"));
+				if (type == null)
+					type = QueryType.OTHER;
+				Calendar ts = Calendar.getInstance();
+				ts.setTime(entry.getDate("ts"));
+				String clientIp = entry.getString("client");
+				String user = entry.getString("user");
+				int responseLength = entry.getInteger("user");
+				int numDocsReturned = entry.getInteger("nreturned");
+				int milliseconds = entry.getInteger("millis");
+				String nameSpace = entry.getString("ns");
+				int keysExamined = entry.getInteger("keysExamined");
+				int docsExamined = entry.getInteger("docsExamined");
+				int numDeleted = entry.getInteger("ndeleted");
+				int numInserted = entry.getInteger("ninserted");
+				int numMatched = entry.getInteger("nMatched");
+				int numModified = entry.getInteger("nModified");
+				int keysInserted = entry.getInteger("keysInserted");
+				int keysDeleted = entry.getInteger("keysDeleted");
+				int writeConflicts = entry.getInteger("writeConflicts");
+				int numYield = entry.getInteger("numYield");
+				UsesIndex indxType = keysExamined == docsExamined ? UsesIndex.YES
+						: keysExamined == 0 ? UsesIndex.NO : UsesIndex.PARTIAL;
+				parsed.add(new ProfileEntry(nameSpace, milliseconds, clientIp, user, type, ts, indxType,
+						lSearchFields, responseLength, numDocsReturned, keysExamined, docsExamined, numDeleted,
+						numInserted, numMatched, numModified, keysInserted, keysDeleted, writeConflicts, numYield));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

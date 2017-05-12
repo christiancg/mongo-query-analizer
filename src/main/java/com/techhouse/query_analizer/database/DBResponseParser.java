@@ -1,14 +1,20 @@
 package com.techhouse.query_analizer.database;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bson.Document;
 
+import com.mongodb.client.FindIterable;
 import com.techhouse.datamodel.CollectionStats;
 import com.techhouse.datamodel.DbStats;
+import com.techhouse.datamodel.ProfileEntry;
+import com.techhouse.datamodel.QueryType;
+import com.techhouse.datamodel.UsesIndex;
 
-public class DBInfoResponseParser {
+public class DBResponseParser {
 	public static DbStats parseDbStats(Document toParse) {
 		DbStats result = null;
 		try {
@@ -39,5 +45,19 @@ public class DBInfoResponseParser {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	public static List<ProfileEntry> parseProfileEntries(FindIterable<Document> results){
+		List<ProfileEntry> parsed = null;
+		try {
+			parsed = new ArrayList<ProfileEntry>();
+			for (Document entry : results) {
+				List<String> lSearchFields = DocumentParser.searchOperators(entry);
+				parsed.add(new ProfileEntry(entry.getInteger("millis"), QueryType.FIND, UsesIndex.NO, lSearchFields));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return parsed;
 	}
 }

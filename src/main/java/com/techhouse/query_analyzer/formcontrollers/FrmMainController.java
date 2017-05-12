@@ -140,6 +140,10 @@ public class FrmMainController implements Initializable {
 	@FXML
 	private Button btnShowProfileEntries;
 
+	private Stage profileStage;
+
+	private Scene profileScene;
+
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		loadEvents();
@@ -167,18 +171,26 @@ public class FrmMainController implements Initializable {
 
 	private void loadProfileEntriesWindow() {
 		try {
+			profileViewCheckAlreadyOpen();
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("forms/FrmProfileEntries.fxml"));
-			Stage stage = new Stage(StageStyle.DECORATED);
-			stage.setTitle("Profile entries - " + selectedDbName);
-			stage.setScene(new Scene((SplitPane) loader.load()));
+			profileStage = new Stage(StageStyle.DECORATED);
+			profileStage.setTitle("Profile entries - " + selectedDbName);
+			profileScene = new Scene((SplitPane) loader.load());
+			profileStage.setScene(profileScene);
 			FrmProfileEntriesController controller = loader.<FrmProfileEntriesController>getController();
 			if (selectedCollectionName == null || selectedCollectionName.isEmpty())
 				controller.initData(selectedDbName);
 			else
 				controller.initData(selectedDbName, selectedCollectionName);
-			stage.show();
+			profileStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void profileViewCheckAlreadyOpen(){
+		if(profileStage!=null){
+			profileStage.close();
 		}
 	}
 

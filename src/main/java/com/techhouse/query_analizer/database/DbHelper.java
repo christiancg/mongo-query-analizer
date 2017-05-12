@@ -1,13 +1,18 @@
 package com.techhouse.query_analizer.database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.ListIndexesIterable;
 import com.mongodb.client.MongoIterable;
 import com.techhouse.datamodel.CollectionStats;
 import com.techhouse.datamodel.DbStats;
+import com.techhouse.datamodel.ProfileEntry;
 import com.techhouse.datamodel.ProfilingLevel;
 
 public class DbHelper {
@@ -85,7 +90,7 @@ public class DbHelper {
 			Bson toRun = (Bson) bd;
 			Document rawResult = DbConnectionSingleton.getConnection().getDatabase(dbName).runCommand(toRun);
 			if (rawResult != null)
-				result = DBInfoResponseParser.parseDbStats(rawResult);
+				result = DBResponseParser.parseDbStats(rawResult);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,12 +100,33 @@ public class DbHelper {
 	public static CollectionStats getCollectionStats(String dbName, String collectionName) {
 		CollectionStats result = null;
 		try {
-			BsonDocument col = BsonDocument.parse(" { collStats: '"+ collectionName +"' , scale: 1 , verbose: false }");
+			BsonDocument col = BsonDocument
+					.parse(" { collStats: '" + collectionName + "' , scale: 1 , verbose: false }");
 			Bson toRun = (Bson) col;
 			Document rawResult = DbConnectionSingleton.getConnection().getDatabase(dbName).runCommand(toRun);
-			if(rawResult!=null)
-				result = DBInfoResponseParser.parseCollectionStats(rawResult);
+			if (rawResult != null)
+				result = DBResponseParser.parseCollectionStats(rawResult);
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public static List<ProfileEntry> searchProfileEntries(String dbName, String colName) {
+		List<ProfileEntry> result = null;
+		BsonDocument query = null;
+		try {
+			result = new ArrayList<ProfileEntry>();
+			FindIterable<Document> queryResults = null;
+			if (colName != null && !colName.isEmpty()){
+				query = BsonDocument.parse("{ 'system.profile': '" + dbName + "' , scale: 1 , verbose: false }");
+				queryResults = DbConnectionSingleton.getConnection().getDatabase(dbName).getCollection("system.profile").find(query);
+			}else{
+				queryResults = DbConnectionSingleton.getConnection().getDatabase(dbName).getCollection("system.profile").find();
+			}
+			result = DBResponseParser.parseProfileEntries(queryResults);
+		} catch (Exception e) {
+			result = null;
 			e.printStackTrace();
 		}
 		return result;
